@@ -1,20 +1,36 @@
-import { useContext, useEffect } from 'react';
-import { PostsContext } from '../contexts/PostsProvider/context';
+import { useContext, useEffect, useRef } from 'react';
 import { loadPosts } from '../contexts/PostsProvider/actions';
+import { PostsContext } from '../contexts/PostsProvider/context';
 
 export const Posts = () => {
-  const { postsState, postsDispatch } = useContext(PostsContext);
+  const isMounted = useRef(true);
+  const postsContext = useContext(PostsContext);
+  const { postsState, postsDispatch } = postsContext;
 
   useEffect(() => {
-    loadPosts(postsDispatch);
+    loadPosts(postsDispatch).then((dispatch) => {
+      if (isMounted.current) {
+        dispatch();
+      }
+    });
+
+    return () => {
+      isMounted.current = false;
+    };
   }, [postsDispatch]);
-  console.log(postsState);
 
   return (
     <div>
-      {postsState.postsArr.map((p) => {
-        <p key={p.id}>{p.title}</p>;
-      })}
+      <h1>POSTS</h1>
+      {postsState.loading && (
+        <p>
+          <strong>Carregando posts...</strong>
+        </p>
+      )}
+
+      {postsState.posts.map((p) => (
+        <p key={p.id}>{p.title}</p>
+      ))}
     </div>
   );
 };

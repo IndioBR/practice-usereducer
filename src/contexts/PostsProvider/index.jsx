@@ -15,5 +15,5 @@ export const PostsProvider = ({ children }) => {
 };
 
 PostsProvider.propTypes = {
-  children: P.oneOfType([P.string, P.element, P.node]).isRequired,
+  children: P.node.isRequired,
 };

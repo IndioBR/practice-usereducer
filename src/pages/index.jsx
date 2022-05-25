@@ -5,11 +5,10 @@ import './styles.css';
 function App() {
   return (
     <PostsProvider>
-      <div>
-        <Posts />
-      </div>
+      <Posts />
     </PostsProvider>
   );
 }
+//https://jsonplaceholder.typicode.com/posts
 
 export default App;
